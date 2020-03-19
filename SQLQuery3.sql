@@ -5,38 +5,43 @@
 INSERT INTO album(Title, ReleaseDate, AlbumLength, [Label], ArtistId, GenreId) VALUES ('Millenium', 1999, '3', '3', '31', '7');
 
 INSERT INTO Song(Title, SongLength, ReleaseDate, GenreId, ArtistId, AlbumId) VALUES ('Larger Than Life', '233', '1999', '7', '31', '25');
+
+
+
+Select a.Title, s.Title, ar.ArtistName
+From song s
+Left Join Album a
+on s.AlbumId = a.Id
+Left Join Artist ar
+on s.ArtistId = ar.Id
+
+
+SELECT COUNT(AlbumId)
+as 'Song Count', a.Title
+From Song s
+LEFT join Album a
+On s.AlbumId = a.Id
+Group By albumId, a.Title
+Order By COUNT(AlbumId) desc;
 	
+SELECT COUNT(ArtistId)
+as 'Song Count', ar.ArtistName
+From Song s
+LEFT join Artist ar
+On s.ArtistId = ar.Id
+Group By albumId, ar.ArtistName
+Order By COUNT(ArtistId) desc;
 
+SELECT COUNT(GenreId)
+as 'Song Count', g.[Label]
+From Song s
+LEFT join Genre g
+On s.GenreId = g.Id
+Group By GenreId , g.Label
 
-SELECT a.Title, s.Title FROM Song s 
-LEFT JOIN Album a ON s.AlbumId = a.Id;
-
-SELECT s.Title, a.Title, art.ArtistName, g.[Label]
-from Song s
-LEFT JOIN Album a on s.AlbumId = a.Id
-LEFT JOIN Artist art on s.ArtistId = art.Id
-LEFT JOIN Genre g on s.GenreId = g.Id;
-
-SELECT COUNT(AlbumId) as 'Song Count', a.Title 
-from Song s
-LEFT JOIN Album a on s.AlbumId = a.Id
-GROUP BY AlbumId, a.Title;
-
-
-SELECT COUNT(ArtistId) as 'Song Count', art.ArtistName
-from Song s
-LEFT JOIN Artist art on s.ArtistId = art.Id
-GROUP BY ArtistId, art.ArtistName;
-
-SELECT COUNT(GenreId) as 'Song Count', g.Label
-from Song s
-LEFT JOIN Genre g on s.GenreId = g.Id
-GROUP BY GenreId, g.Label;
-
-SELECT Title, AlbumLength as 'Album Length'
-from Album
-WHERE AlbumLength=(SELECT MAX(AlbumLength) from Album);
-
+Select Title, AlbumLength
+From Album
+Where AlbumLength =(Select Max(AlbumLength) from Album);
 
 SELECT s.Title, a.Title, SongLength as 'Song Length'
 from Song s
